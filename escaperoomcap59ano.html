@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Room: Novas Configurações Religiosas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Visualization & Content Choices: 
+        - Report Info: Key definitions (Sincretismo, Hibridismo), specific religious movements (Umbanda, Tambor de Mina), and oriental influences (Feng Shui) -> Goal: Assess understanding & engagement -> Method: Text-based questions with input fields (HTML/Tailwind) -> Interaction: Input text, click 'Verificar Código' button -> Justification: Direct assessment of knowledge from the PDF, driving the game's progression.
+        - Room transitions -> Goal: Provide clear feedback & progression -> Method: JavaScript to hide/show sections -> Interaction: Automatic on correct answer -> Justification: Creates a sense of accomplishment and mystery.
+        - Error/Success messages -> Goal: Guide user -> Method: Dynamic text updates (HTML/JS) -> Interaction: Immediate feedback -> Justification: Essential for user experience in a game.
+        - Images: Placeholder images from placehold.co to visually represent room themes.
+        - Sounds: Tone.js for subtle success, error, and room transition sound effects. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .room {
+            display: none;
+        }
+        .room.active {
+            display: block;
+        }
+        .start-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-50 to-emerald-100 min-h-screen flex items-center justify-center p-4">
+
+    <div class="bg-white rounded-xl shadow-2xl p-8 md:p-12 w-full max-w-3xl border-t-4 border-emerald-600">
+        <h1 class="text-3xl md:text-4xl font-bold text-center text-emerald-800 mb-6">Escape Room: As Novas Configurações Religiosas</h1>
+        <p class="text-center text-gray-700 mb-8">Bem-vindos, exploradores! Para escapar desta sala e completar sua missão, vocês precisarão desvendar os mistérios do nosso capítulo "As Novas Configurações Religiosas". Cada resposta correta é um código que abrirá a próxima porta. Boa sorte!</p>
+
+        <div id="startScreen" class="start-screen active">
+            <p class="text-gray-800 mb-6">Clique no botão abaixo para iniciar a aventura e ativar os sons do jogo!</p>
+            <button id="startButton" class="bg-emerald-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-emerald-700 transition duration-300">Iniciar Jogo</button>
+        </div>
+
+        <div id="room1" class="room">
+            <h2 class="text-2xl font-semibold text-emerald-700 mb-4">Sala 1: O Enigma dos Conceitos</h2>
+            <img src="https://placehold.co/400x200/e0f2f7/000?text=Sincretismo+Religioso" alt="[Image of Sincretismo Religioso]" class="w-full rounded-lg mb-6">
+            <p class="text-gray-800 mb-6">Qual o termo que define a combinação de elementos de duas ou mais tradições religiosas, compondo uma estrutura específica de crenças, preceitos éticos, organização da comunidade, orações e rituais, e que sempre será uma junção de, no mínimo, duas culturas que entraram em contato?</p>
+            <input type="text" id="code1" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 mb-4" placeholder="Digite o código aqui">
+            <button onclick="checkAnswer(1)" class="w-full bg-emerald-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-emerald-700 transition duration-300">Verificar Código</button>
+            <p id="message1" class="text-red-600 mt-3 text-center"></p>
+        </div>
+
+        <div id="room2" class="room">
+            <h2 class="text-2xl font-semibold text-emerald-700 mb-4">Sala 2: A Origem da Umbanda</h2>
+            <img src="https://placehold.co/400x200/f0f9ff/000?text=Origens+da+Umbanda" alt="[Image of Origens da Umbanda]" class="w-full rounded-lg mb-6">
+            <p class="text-gray-800 mb-6">De acordo com o texto, a Umbanda é uma religião brasileira originada da influência de elementos de quais três matrizes culturais/religiosas principais? (Responda as três palavras juntas, sem espaços ou acentos, em minúsculas. Ex: palavra1palavra2palavra3)</p>
+            <input type="text" id="code2" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 mb-4" placeholder="Digite o código aqui">
+            <button onclick="checkAnswer(2)" class="w-full bg-emerald-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-emerald-700 transition duration-300">Verificar Código</button>
+            <p id="message2" class="text-red-600 mt-3 text-center"></p>
+        </div>
+
+        <div id="room3" class="room">
+            <h2 class="text-2xl font-semibold text-emerald-700 mb-4">Sala 3: A Prática Oriental</h2>
+            <img src="https://placehold.co/400x200/e0f7fa/000?text=Harmonia+Oriental" alt="[Image of Harmonia Oriental]" class="w-full rounded-lg mb-6">
+            <p class="text-gray-800 mb-6">Qual a prática de origem taoísta mencionada no texto, que é um conjunto de técnicas para a harmonização dos ambientes?</p>
+            <input type="text" id="code3" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 mb-4" placeholder="Digite o código aqui">
+            <button onclick="checkAnswer(3)" class="w-full bg-emerald-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-emerald-700 transition duration-300">Verificar Código</button>
+            <p id="message3" class="text-red-600 mt-3 text-center"></p>
+        </div>
+
+        <div id="room4" class="room text-center">
+            <h2 class="text-3xl font-bold text-emerald-700 mb-4">Parabéns! Missão Cumprida! 🎉</h2>
+            <img src="https://placehold.co/400x200/d4edda/000?text=Missão+Concluída!" alt="[Image of Missão Concluída!]" class="w-full rounded-lg mb-6">
+            <p class="text-gray-800 mb-6">Vocês desvendaram todos os mistérios e escaparam da sala! Isso mostra que vocês dominaram os conceitos de sincretismo, hibridismo e as novas configurações religiosas no Brasil.</p>
+            <p class="text-gray-800 font-semibold">Esperamos que tenham se divertido e aprendido muito!</p>
+        </div>
+    </div>
+
+    <script>
+        let currentRoom = 0; // 0 for start screen, 1 for room1, etc.
+        let successSynth, errorSynth, transitionSynth;
+
+        const answers = {
+            1: "sincretismo",
+            2: "europeusindigenasafricanas",
+            3: "fengshui" // Changed to single word for consistency
+        };
+
+        function showRoom(roomNumber) {
+            document.querySelectorAll('.room, .start-screen').forEach(element => {
+                element.classList.remove('active');
+            });
+            if (roomNumber === 0) {
+                document.getElementById('startScreen').classList.add('active');
+            } else {
+                document.getElementById(`room${roomNumber}`).classList.add('active');
+                if (transitionSynth) {
+                    transitionSynth.triggerAttackRelease('C4', '8n'); // Subtle tone for room transition
+                }
+            }
+        }
+
+        function normalizeString(str) {
+            return str.toLowerCase().replace(/\s/g, '').normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        }
+
+        function checkAnswer(roomNumber) {
+            const inputElement = document.getElementById(`code${roomNumber}`);
+            const messageElement = document.getElementById(`message${roomNumber}`);
+            const userAnswer = normalizeString(inputElement.value);
+            const correctAnswer = answers[roomNumber];
+
+            if (userAnswer === correctAnswer) {
+                messageElement.textContent = "Código correto! Avançando...";
+                messageElement.classList.remove('text-red-600');
+                messageElement.classList.add('text-green-600');
+                if (successSynth) {
+                    successSynth.triggerAttackRelease('C5', '8n'); // Play success sound
+                }
+                setTimeout(() => {
+                    currentRoom++;
+                    showRoom(currentRoom);
+                    if (currentRoom > Object.keys(answers).length) {
+                        showRoom(Object.keys(answers).length + 1); // Show the final room
+                    }
+                }, 1500);
+            } else {
+                messageElement.textContent = "Código incorreto. Tente novamente!";
+                messageElement.classList.remove('text-green-600');
+                messageElement.classList.add('text-red-600');
+                if (errorSynth) {
+                    errorSynth.triggerAttackRelease('C3', '8n'); // Play error sound
+                }
+            }
+        }
+
+        document.getElementById('startButton').addEventListener('click', async () => {
+            await Tone.start(); // Start Tone.js audio context
+            successSynth = new Tone.Synth().toDestination();
+            errorSynth = new Tone.Synth({
+                oscillator: { type: 'triangle' },
+                envelope: { attack: 0.01, decay: 0.1, sustain: 0.05, release: 0.2 }
+            }).toDestination();
+            transitionSynth = new Tone.Synth({
+                oscillator: { type: 'sine' },
+                envelope: { attack: 0.01, decay: 0.2, sustain: 0.1, release: 0.5 }
+            }).toDestination();
+
+            currentRoom = 1;
+            showRoom(currentRoom);
+        });
+
+        // Initialize the start screen on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            showRoom(currentRoom);
+        });
+    </script>
+</body>
+</html>
